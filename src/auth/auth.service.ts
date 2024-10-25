@@ -3,7 +3,7 @@ import {v4 as uuidv4} from 'uuid';
 import { AuthDto } from './dto/auth.dto';
 import { Auth } from './auth.entity';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
