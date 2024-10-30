@@ -12,7 +12,11 @@ export class UserService {
     private authService: AuthService,
   ) {}
 
-  async getUser(access_token:any): Promise<any> {
+  async getTest():Promise<['Test']>{
+    return ['Test']
+  }
+  
+  async getUser(access_token:any): Promise<User[]> {
     const tokenValidate:any = await this.authService.checkAccessToken(access_token);
     
     if (tokenValidate.status == 200){

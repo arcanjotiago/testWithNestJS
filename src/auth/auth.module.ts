@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { DatabaseModule } from 'src/database/database.module';
+import { DatabaseModule } from '../database/database.module';
 import { authProviders } from './auth.providers';
-import { userProviders } from 'src/user/user.providers';
+import { userProviders } from '../user/user.providers';
 
 @Module({
   imports: [DatabaseModule],

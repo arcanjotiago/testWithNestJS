@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Delete } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
@@ -12,6 +13,11 @@ export class UserController {
     private readonly userService:UserService
   ) {}
 
+  @Get('/test')
+  getTest():Promise<['Test']> {
+    return this.userService.getTest();  
+  }
+  
   @Get('/')
   getUser(@Headers('tokenAuthorization') tokenAuthorization:any):any {
     return this.userService.getUser(tokenAuthorization);  

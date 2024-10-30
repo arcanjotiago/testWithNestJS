@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
-import { User } from 'src/user/user.entity';
-import { Auth } from 'src/auth/auth.entity';
+import { User } from '../user/user.entity';
+import { Auth } from '../auth/auth.entity';
 
 
 export const databaseProviders = [
