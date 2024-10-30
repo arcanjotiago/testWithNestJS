@@ -21,7 +21,7 @@ describe('Test TestController', () => {
 
   describe('getTest', () => {
     it('This function must return an array of test', async () => {
-      jest.spyOn(testService, 'getTest').mockImplementation(() => Promise.resolve(['Test']));
+      // jest.spyOn(testService, 'getTest').mockImplementation(() => Promise.resolve(['Test']));
       expect(await testController.getTest()).toStrictEqual(['Test']);
     });
   });
