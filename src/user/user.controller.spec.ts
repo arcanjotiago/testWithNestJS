@@ -8,8 +8,6 @@ import { userProviders } from './user.providers';
 import { DatabaseModule } from '../database/database.module';
 
 
-
-
 describe('Test UserController', () => {
   let userService: UserService;
   let userController: UserController;
@@ -29,6 +27,13 @@ describe('Test UserController', () => {
     it('This function must return an array of test', async () => {
       // jest.spyOn(userService, 'getTest').mockImplementation(() => Promise.resolve(['Test']));
       expect(await userController.getTest()).toStrictEqual(['Test']);
+    });
+  });
+
+  describe('getUser', () => {
+    it('This function must return an array of users', async () => {
+      jest.spyOn(userService, 'getUser').mockImplementation(() => Promise.resolve([]))
+      expect(await userController.getUser('a5ec9a09-e9be-43bd-9bfe-3d6f949c7305')).toStrictEqual([]);
     });
   });
 });

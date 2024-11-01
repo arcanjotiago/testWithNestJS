@@ -16,7 +16,7 @@ export class UserService {
     return ['Test']
   }
   
-  async getUser(access_token:any): Promise<User[]> {
+  async getUser(access_token:any){
     const tokenValidate:any = await this.authService.checkAccessToken(access_token);
     
     if (tokenValidate.status == 200){

@@ -80,7 +80,7 @@ export class AuthService {
     }
     
     return {
-      "message":"Acess not authorized! Token not find!",
+      "message":"Acess not authorized! Token not found!",
       "status":401,
     }
   }
