@@ -6,11 +6,14 @@ import { UserModule } from './user.module';
 import { AuthModule } from '../auth/auth.module';
 import { userProviders } from './user.providers';
 import { DatabaseModule } from '../database/database.module';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './user.entity';
 
 
 describe('Test UserController', () => {
   let userService: UserService;
   let userController: UserController;
+  let user: User = new User();
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -36,4 +39,23 @@ describe('Test UserController', () => {
       expect(await userController.getUser('a5ec9a09-e9be-43bd-9bfe-3d6f949c7305')).toStrictEqual([]);
     });
   });
+
+  describe('createUser', () => {
+    it('This function must add user on database', async () => {
+      user.name = 'Test';
+      user.email = 'runtest@email.com';
+      user.password = '000000';
+      user.id = '6e638020-8f64-4b8d-b7c7-0d7094b994f8'
+      jest.spyOn(userService, 'createUser').mockImplementation()
+      expect(await userController.createUser(user)).toStrictEqual(user);
+    });
+
+  });
+
+
+
+
+
+
+
 });

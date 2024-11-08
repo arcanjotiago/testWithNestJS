@@ -5,7 +5,7 @@ export class TestService {
   constructor(
   ) {}
 
-  async getTest():Promise<['Test']>{
-    return ['Test']
+  async getTest(calc){
+    return calc.a + calc.b;
   }
 }

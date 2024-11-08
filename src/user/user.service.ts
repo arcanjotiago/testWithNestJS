@@ -51,7 +51,7 @@ export class UserService {
     }   
   }
     
-    async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto){
 
       const validateMail = await this.getUserEmail(createUserDto.email);
       if(validateMail.status == 401){
@@ -64,7 +64,7 @@ export class UserService {
       user.password = createUserDto.password;
       return this.userRepository.save(user);
 
-    // return tokenValidate;
+    // return 'teste';
   }
 
   async deleteUser(access_token:any, id: string): Promise<{ affected?: number }> {

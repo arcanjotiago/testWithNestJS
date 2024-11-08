@@ -5,7 +5,7 @@ import { Auth } from '../auth/auth.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: UUID;
+  id: string;
   
   @Column('timestamp with time zone')
   created_at: Timestamp;
