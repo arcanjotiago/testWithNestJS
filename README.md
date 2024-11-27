@@ -1,10 +1,11 @@
+# Install
 npm install --save-dev jest
 npm i -D jest typescript
 npm i -D ts-jest @types/jest
 
 npm init jest@latest
 
-# test
+# Test
 This repository was created to implement test of integration in nodeJs.
 
 

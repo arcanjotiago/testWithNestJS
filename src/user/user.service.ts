@@ -62,9 +62,10 @@ export class UserService {
       user.name = createUserDto.name;
       user.email = createUserDto.email;
       user.password = createUserDto.password;
-      return this.userRepository.save(user);
+      const prt =  await this.userRepository.save(user);
+      console.log(prt);
+      return prt;
 
-    // return 'teste';
   }
 
   async deleteUser(access_token:any, id: string): Promise<{ affected?: number }> {

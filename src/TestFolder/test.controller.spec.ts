@@ -1,4 +1,5 @@
 import { TestService } from './test.service';
+import {expect, jest, test} from '@jest/globals';
 
 let runTest = new TestService();
 const calc = {
@@ -6,7 +7,7 @@ const calc = {
   "b":2
 };
 
-  test('adds 1 + 2 to equal 3', async () => {
+  test('SUM 1 + 2 to equal 3', async () => {
     const rTest = await runTest.getTest(calc); // Testando retorno de funçào assincrona
     expect(rTest).toBe(3);
   });
