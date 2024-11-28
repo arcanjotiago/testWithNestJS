@@ -62,9 +62,7 @@ export class UserService {
       user.name = createUserDto.name;
       user.email = createUserDto.email;
       user.password = createUserDto.password;
-      const prt =  await this.userRepository.save(user);
-      console.log(prt);
-      return prt;
+      return await this.userRepository.save(user);
 
   }
 
