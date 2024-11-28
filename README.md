@@ -21,13 +21,6 @@ Here we have a user login module with follow description:
 ```terminal
 $ npm install
 $ npm run migration:run This command will create the auth and user tables in your database. Remember to configure the .env file with the necessary parameters.
-
-### Install test depedencies
-npm i --save-dev @nestjs/testing
-npm install --save-dev jest (?Avaliar se é realmente necessário)
-npm i -D jest typescript
-npm i -D ts-jest @types/jest
-npm init jest@latest
 ```
 
 ## Running the app or testing
