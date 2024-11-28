@@ -1,20 +1,9 @@
-# Install
-npm install --save-dev jest
-npm i -D jest typescript
-npm i -D ts-jest @types/jest
-
-npm init jest@latest
-
-# Test
-This repository was created to implement test of integration in nodeJs.
-
-
-Below, I describe the user login module.
-
 ## Description
-This project was developed using NestJS. Here we have a user login module with follow description:
+This repository was created to implement test of integration using NestJS with Jest.
+
+Here we have a user login module with follow description:
 -The user has specific endpoint to do login with email and password. After login, the user receives a valid token for 24hrs.
--For each endpint, except the login, the user shoud be send the valid access token.
+-For each endpint, except the login, the user shoud be send the valid access token in Header.
 
 ## Endpoints
 ### method-description / endpoint  
@@ -26,20 +15,26 @@ This project was developed using NestJS. Here we have a user login module with f
 -DEL Delete User: /user/:id  
 -PUT Update User: /user/:id  
 
+*Except to the route /user/create, add the header "tokenAuthorization" with you token authorization for access the endpoints above.
 
 ## Installation
 ```terminal
 $ npm install
+$ npm run migration:run This command will create the auth and user tables in your database. Remember to configure the .env file with the necessary parameters.
+
+### Install test depedencies
+npm i --save-dev @nestjs/testing
+npm install --save-dev jest (?Avaliar se é realmente necessário)
+npm i -D jest typescript
+npm i -D ts-jest @types/jest
+npm init jest@latest
 ```
 
-## Running the app
+## Running the app or testing
 ```terminal
 # development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
+# Testing
+$ npm run test
 ```

@@ -12,7 +12,10 @@ describe('Test UserController', () => {
   let userService: UserService;
   let userController: UserController;
   let user: any = new User(); //declaração do User
+  let id:string;
+  let tokenAuth:string;
 
+  
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
         imports: [UserModule, AuthModule, DatabaseModule, ConfigModule.forRoot()],
@@ -24,22 +27,34 @@ describe('Test UserController', () => {
     userService = moduleRef.get(UserService);
   });
 
-  describe('getTest', () => {
-    it('This function must return an array of test', async () => {
-      jest.spyOn(userService, 'getTest').mockImplementation(() => Promise.resolve(['Test']));
-      expect(await userController.getTest()).toStrictEqual(['Test']);
-    });
-  });
-
   describe('getUser', () => {
-    it('This function must return an array of users', async () => {
+    it('This function should return an array of users', async () => {
       jest.spyOn(userService, 'getUser').mockImplementation(() => Promise.resolve([]))
       expect(await userController.getUser('a5ec9a09-e9be-43bd-9bfe-3d6f949c7305')).toStrictEqual([]);
     });
   });
 
+  
+  describe('getUserId', () => {
+    it('This function must return user from database by id', async () => {
+
+      jest.spyOn(userService, 'getUserId').mockImplementation(() => {
+        id = '44be2db3-e8fb-4117-b727-068d70302531';
+        tokenAuth = 'a4f54d64-55b1-47d4-a665-a289365bf62b'
+        user.name = 'Test';
+        user.email = 'runtest@email.com';
+        user.password = '000000';
+        
+        return user;
+      });
+
+      expect(await userController.getUserId(tokenAuth, id)).toMatchObject(user);
+    });
+  });
+
+  
   describe('createUser', () => {
-    it('This function must add user on database', async () => {
+    it('This function should add user of type "user" on database', async () => {
 
       jest.spyOn(userService, 'createUser').mockImplementation(() => {
 
@@ -51,13 +66,6 @@ describe('Test UserController', () => {
 
       expect(await userController.createUser(user)).toMatchObject(user);
     });
-
   });
-
-
-
-
-
-
-
+  
 });

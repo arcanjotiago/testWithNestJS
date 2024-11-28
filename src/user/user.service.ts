@@ -11,10 +11,6 @@ export class UserService {
     private userRepository: Repository<User>,
     private authService: AuthService,
   ) {}
-
-  async getTest():Promise<['Test']>{
-    return ['Test']
-  }
   
   async getUser(access_token:any){
     const tokenValidate:any = await this.authService.checkAccessToken(access_token);

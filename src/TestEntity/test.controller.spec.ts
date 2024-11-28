@@ -1,16 +1,20 @@
 import { TestService } from './test.service';
-import {expect, jest, test} from '@jest/globals';
+import {expect} from '@jest/globals';
 
-let runTest = new TestService();
-const calc = {
-  "a":1,
-  "b":2
-};
 
-  test('SUM 1 + 2 to equal 3', async () => {
-    const rTest = await runTest.getTest(calc); // Testando retorno de funçào assincrona
-    expect(rTest).toBe(3);
+describe('genericTest', () => {
+  it('This function should sum the fields of the calc object', async () => {
+    let runTest = new TestService();
+    const calc = {
+      "a":1,
+      "b":2
+    };
+    
+    expect(await runTest.getTest(calc)).toBe(3);
   });
+});
+
+
 
 
 

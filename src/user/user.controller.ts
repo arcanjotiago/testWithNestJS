@@ -12,11 +12,6 @@ export class UserController {
   constructor(
     private readonly userService:UserService
   ) {}
-
-  @Get('/test')
-  getTest():Promise<['Test']> {
-    return this.userService.getTest();  
-  }
   
   @Get('/')
   getUser(@Headers('tokenAuthorization') tokenAuthorization:any){
