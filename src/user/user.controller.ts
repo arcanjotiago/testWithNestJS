@@ -14,7 +14,7 @@ export class UserController {
   ) {}
   
   @Get('/')
-  getUser(@Headers('tokenAuthorization') tokenAuthorization:any){
+  getUser(@Headers('tokenAuthorization') tokenAuthorization:string){
     return this.userService.getUser(tokenAuthorization);  
   }
   

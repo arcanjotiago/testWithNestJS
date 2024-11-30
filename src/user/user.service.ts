@@ -12,7 +12,7 @@ export class UserService {
     private authService: AuthService,
   ) {}
   
-  async getUser(access_token:any){
+  async getUser(access_token:string){
     const tokenValidate:any = await this.authService.checkAccessToken(access_token);
     
     if (tokenValidate.status == 200){
