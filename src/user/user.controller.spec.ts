@@ -4,7 +4,7 @@ import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
 import { UserModule } from './user.module';
 import { AuthModule } from '../auth/auth.module';
-import { UserProviders } from './user.providers';
+import { userProviders } from './user.providers';
 import { DatabaseModule } from '../database/database.module';
 import { User } from './user.entity';
 
@@ -14,14 +14,14 @@ describe('Itegration test user controller', () => {
   let userService: UserService;
   let userController: UserController;
   let user:User = new User(); //declaração do User
-  let userProviders: UserProviders;
+  let userProvider: userProviders;
 
   
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
         imports: [UserModule, AuthModule, DatabaseModule, ConfigModule.forRoot()],
         controllers: [UserController],
-        providers: [UserService, ...UserProviders],
+        providers: [UserService, ...userProviders],
     }) 
     .compile();
 
