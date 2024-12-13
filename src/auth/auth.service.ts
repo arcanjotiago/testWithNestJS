@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   async checkAccessToken(access_token:any): Promise<any>{  
-    console.log('cheguei aqui dentro do auth service')
+
     if(typeof(access_token) != "string"){
       return {
         "message":"Acess not authorized! please, send a valid access token in header requisition!",
