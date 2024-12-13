@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+// import { ModuleRef } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
@@ -7,14 +8,25 @@ import { AuthModule } from '../auth/auth.module';
 import { userProviders } from './user.providers';
 import { DatabaseModule } from '../database/database.module';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
+import { authProviders } from '../auth/auth.providers';
+import * as dotenv from 'dotenv';
+import { Any } from 'typeorm';
+import { RouterModule } from '@nestjs/core';
+import { CreateUserDto } from './dto/create-user.dto';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { AuthDto } from '../auth/dto/auth.dto';
+// import { AuthController } from '../auth/auth.controller';
+// import { databaseProviders } from '../database/database.providers';
+dotenv.config();
 
 
 
-describe('Itegration test user controller', () => {
+
+describe('Tests userController', () => {
   let moduleRef: TestingModule
   let userService: UserService;
+  let authService: AuthService
   let userController: UserController;
 
   let user:User = new User(); //declaração do User
@@ -23,66 +35,109 @@ describe('Itegration test user controller', () => {
   user.password = '0000000',
   user.role = 'user'
 
-  let userRepositoryMock: MockType<Repository<User>>;
-  const mockNumberToSatisfyParameters = 0;
+  const mockAuthService = {
+    checkAccessToken: jest.fn().mockImplementation( access_token => {
+      if (typeof(access_token) == 'string'){
+        return {
+          "message":"Access granted ",
+          "status":200
+        }
+      }
+    })
+  }
 
-  
+
+
+
   beforeAll(async () => {
-    // moduleRef = await Test.createTestingModule({
-    //     imports: [UserModule, AuthModule, DatabaseModule, ConfigModule.forRoot()],
-    //     controllers: [UserController],
-    //     providers: [UserService, ...userProviders],
-    // }) 
     moduleRef = await Test.createTestingModule({
       imports: [UserModule, AuthModule, DatabaseModule, ConfigModule.forRoot({envFilePath: 'staging.env',})],
       controllers: [UserController],
-      providers: [UserService, ...userProviders, { provide: getRepositoryToken(User), useFactory: repositoryMockFactory }],
+      providers: [UserService, ...userProviders, AuthService, ...authProviders]
+      
     })
+    .overrideProvider(AuthService)
+    .useValue(mockAuthService)
     .compile();
 
-    userController = await moduleRef.get(UserController);
-    userService = await moduleRef.get(UserService);
-    userRepositoryMock = moduleRef.get(getRepositoryToken(User));
+      // userController = await moduleRef.get(UserController);
+      // userService = await moduleRef.get(UserService);
+      // authService = await moduleRef.get(AuthService);
+      userController = moduleRef.get(UserController);
+      userService = moduleRef.get(UserService);
+      authService = moduleRef.get(AuthService);
 
   });
 
-  afterEach(() => {
-    jest.resetAllMocks();
- });
+  // afterEach(() => {
+  //   jest.resetAllMocks();
+  // });
 
-  describe('getUser', () => {
+  
+  // describe('getUser', () => {
     it('This function should return an array of users', async () => {
-      jest.spyOn(userService, 'getUser').mockImplementation(() => Promise.resolve(user)) // Aqui através do jest.spyOn, estamos mockando o userService. Assim quando temos o acionamento do método getUser no controler abaixo, na verdade, ele esta acessando o mock do userService criado acima.
-      expect(await userController.getUser('a5ec9a09-e9be-43bd-9bfe-3d6f949c7305')).toBeInstanceOf(User);;
-    });
-  });
-  
-  
-  describe('createUser', () => {
-    it('This function should add user of type "userEntity" on database', async () => {
       
-      // let user:User = new User(); //declaração do User
-      // user.name = 'seller01_staging',
-      // user.email = 'seller01@budget.com',
-      // user.password = '0000000',
-      // user.role = 'user'
+      // const getToken = await authService.postAuth({
+      //   "email": process.env.USER_EMAIL, 
+      //   "password": process.env.USER_PASSWORD
+      // });
 
-      expect(await userController.createUser(user)).toBeInstanceOf(User);
+      // const token:string = getToken.access_token;
+
+      // console.log(typeof(token));
+
+      const receivedResult = await userController.getUser('fd167625-db35-4c41-b9a7-0d5d1630692a');
+     
+      console.log(receivedResult);
+//
+      // Ideia simples: mock o auth. Afinal você não esta usando ele mesmo
+      //Time video: até os 29 min. O mock do repositório começa em 22 min
+      
+      const expectedUser = [
+        {
+          id: expect.anything(),
+          created_at: expect.anything(),
+          name: expect.anything(),
+          email: expect.anything(),
+          password: expect.anything(),
+          role: expect.anything(),
+          access_token: expect.anything()
+        }
+
+      ]; 
+
+
+      expect(receivedResult).toEqual(expect.objectContaining(expectedUser));
+
+
+  
+
+
     });
-  });
+  // });
+  
+  
+
+
+
+
+
+
+
+
+
+  
+// //   describe('createUser', () => {
+//     it('This function should add user of type "userEntity" on database', async () => {
+      
+//       // let user:User = new User(); //declaração do User
+//       // user.name = 'seller01_staging',
+//       // user.email = 'seller01@budget.com',
+//       // user.password = '0000000',
+//       // user.role = 'user'
+
+//       expect(await userController.createUser(user)).toBeInstanceOf(User);
+//     });
+//   });
   
 });
-
-
-
-
-// @ts-ignore
-export const repositoryMockFactory: () => MockType<Repository<any>> = jest.fn(() => ({
-  findOne: jest.fn(),
-  find: jest.fn(),
-  update: jest.fn(),
-  save: jest.fn()
- }));
- export type MockType<T> = {
-  [P in keyof T]: jest.Mock<{}>;
- };
