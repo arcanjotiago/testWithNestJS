@@ -48,18 +48,19 @@ export class UserService {
   }
     
   async createUser(createUserDto: CreateUserDto){
+    
+    const validateMail = await this.getUserEmail(createUserDto.email);
 
-      const validateMail = await this.getUserEmail(createUserDto.email);
-      if(validateMail.status == 401){
-        return validateMail;
-      };
+    if(validateMail.status == 401){
+      return validateMail;
+    };
       
-      const user: User = new User();
-      user.name = createUserDto.name;
-      user.email = createUserDto.email;
-      user.password = createUserDto.password;
-      user.role = createUserDto.role;
-      return await this.userRepository.save(user);
+    const user: User = new User();
+    user.name = createUserDto.name;
+    user.email = createUserDto.email;
+    user.password = createUserDto.password;
+    user.role = createUserDto.role;
+    return await this.userRepository.save(user);
 
   }
 
