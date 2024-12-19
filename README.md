@@ -4,10 +4,10 @@ This repository was created to implement test of integration using NestJS with J
 Here we have a user login module that have a endpoint to perform login with email and password. After login, the user receives a valid token for `24hrs`.
 
 # Endpoints
--`GET`  /status       *aplication status*  
+-`GET`  /status       `aplication status`  
 -`POST` /user/create  
--`POST` /auth         *login*  
--`GET`  /user         *list all users*  
+-`POST` /auth         `login`  
+-`GET`  /user         `list all users`  
 -`GET`  /user/:id  
 -`DEL`  /user/:id  
 -`PUT`  /user/:id  
