@@ -31,7 +31,7 @@ describe('Tests userController', () => {
 
   beforeAll(async () => {
     moduleRef = await Test.createTestingModule({
-      imports: [UserModule, AuthModule, DatabaseModule, ConfigModule.forRoot({envFilePath: 'staging.env',})],
+      imports: [UserModule, AuthModule, DatabaseModule, ConfigModule.forRoot({envFilePath: '.env.staging',})],
       controllers: [UserController],
       providers: [UserService, ...userProviders, AuthService, ...authProviders]
       
@@ -62,7 +62,6 @@ describe('Tests userController', () => {
         role: expect.anything(),
         access_token: expect.anything()
       }
-
     ]; 
       
     const receivedResult = await userController.getUser('fd167625-db35-4c41-b9a7-0d5d1630692a');
@@ -72,29 +71,27 @@ describe('Tests userController', () => {
 
 
   it('This function should add user on database', async () => {  
-
     const user:CreateUserDto = new CreateUserDto();
     user.name = 'seller01_staging',
     user.email = 'seller01@budget.com',
     user.password = '0000000',
     user.role = 'user'
 
-    let receivedResult = await userController.createUser(user);
+    const receivedResult = await userController.createUser(user);
     expect(receivedResult).toBeInstanceOf(User);    
 
   });
 
 
   it('This function should fail when add an user that exists on database', async () => {
-      
     const user:CreateUserDto = new CreateUserDto();
     user.name = 'seller01_staging',
     user.email = 'seller01@budget.com',
     user.password = '0000000',
     user.role = 'user'
 
-    let receivedResult = await userController.createUser(user);
-    let expectedResult = {"message": "The email informed has used!, please! send the new email on requisition!", "status": 401};
+    const receivedResult = await userController.createUser(user);
+    const expectedResult = {"message": "The email informed has used!, please! send the new email on requisition!", "status": 401};
     expect(receivedResult).toMatchObject(expectedResult);
     
   });
