@@ -12,8 +12,8 @@ export class UserService {
     private authService: AuthService,
   ) {}
   
-  async getUser(access_token:string){
-    const tokenValidate:any = await this.authService.checkAccessToken(access_token);
+  async getUser(access_token:string, responseReq){
+    const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
       return this.userRepository.find(); 
@@ -21,14 +21,14 @@ export class UserService {
     return tokenValidate;
   }
 
-  async getUserId(access_token:any, id: any): Promise<User> {
-    const tokenValidate:any = await this.authService.checkAccessToken(access_token);
+  async getUserId(access_token:any, id: any, responseReq): Promise<User> {
+    const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
       return this.userRepository.findOneBy({ id });
     }
     return tokenValidate;
-    }
+  }
 
   async getUserEmail(email: any): Promise<any> {
     const checkEmailDuplicate = await this.userRepository.findOneBy( {email} );
@@ -47,12 +47,21 @@ export class UserService {
     }   
   }
     
-  async createUser(createUserDto: CreateUserDto){
+  async createUser(createUserDto: CreateUserDto, responseReq){
     
     const validateMail = await this.getUserEmail(createUserDto.email);
 
     if(validateMail.status == 401){
+      responseReq.status(401);
       return validateMail;
+    };
+
+    if (createUserDto.role != 'administrator' && createUserDto.role != 'user'){
+      responseReq.status(400);
+      return {
+        "message": `Error! The type role must be filled with (administrator) or (user)`,
+        "status": 400
+      }
     };
       
     const user: User = new User();
@@ -64,26 +73,66 @@ export class UserService {
 
   }
 
-  async deleteUser(access_token:any, id: string): Promise<{ affected?: number }> {
-    const tokenValidate:any = await this.authService.checkAccessToken(access_token);
+  async deleteUser(access_token:any, id: string, responseReq): Promise<any> {
+    const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
-      return this.userRepository.delete(id);
-    }
+      const response:any = await this.userRepository.delete(id);
+      if (response.affected == 1){
+        return {
+          "message": `The user was removed successfully!`,
+          "status": 200
+        }
+      };
+
+      if (response.affected == 0){
+        responseReq.status(404);
+        return {
+          "message": 'Error! The user was not removed. Please, check the userId',
+          "status": 404
+        }
+      };
+
+    };
     return tokenValidate; 
   }
   
-  async updateUser(access_token:any, id: any, updateUserDto: UpdateUserDto): Promise<any> {
-    const tokenValidate:any = await this.authService.checkAccessToken(access_token);
+  async updateUser(access_token:any, id: any, updateUserDto: UpdateUserDto, responseReq): Promise<any> {
+    const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
+      
+      if (updateUserDto.role != 'administrator' && updateUserDto.role != 'user'){
+        responseReq.status(400);
+        return {
+          "message": `Error! The type role must be filled with (administrator) or (user)`,
+          "status": 400
+        }
+      };
+
       const user: User = new User();
       user.name = updateUserDto.name;
       user.email = updateUserDto.email;
       user.password = updateUserDto.password;
       user.access_token = updateUserDto.access_token;
-      return this.userRepository.update(id, user)
-    }
+      const response:any = await this.userRepository.update(id, user)
+
+      if (response.affected == 1){
+        return {
+          "message": `The user was updated successfully!`,
+          "status": 200
+        }
+      };
+
+      if (response.affected == 0){
+        responseReq.status(304);
+        return {
+          "message": 'Error! The user was not updated!',
+          "status": 304
+        }
+      };
+
+    };
     return tokenValidate; 
   }
 

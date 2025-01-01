@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, Post, Put } from '@nestjs/common';
+import { Controller, Get, Headers, Post, Put, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Body } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,28 +13,40 @@ export class UserController {
   ) {}
   
   @Get('/')
-  getUser(@Headers('tokenAuthorization') tokenAuthorization:string){
-    return this.userService.getUser(tokenAuthorization);  
+  getUser(@Headers('tokenAuthorization') tokenAuthorization:string, @Res({ passthrough: true }) responseReq){
+    return this.userService.getUser(tokenAuthorization, responseReq);  
   }
   
   @Get(':id')
-  getUserId(@Headers('tokenAuthorization') tokenAuthorization:any, @Param('id') id:any) {
-    return this.userService.getUserId(tokenAuthorization, id);
-  }
+  getUserId(
+    @Headers('tokenAuthorization') tokenAuthorization:any, 
+    @Param('id') id:any, 
+    @Res({ passthrough: true }) responseReq
+  ) {
+    return this.userService.getUserId(tokenAuthorization, id, responseReq)
+  ;}
 
   @Post('create')
-  createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  createUser(@Body() createUserDto: CreateUserDto, @Res({ passthrough: true }) responseReq) {
+    return this.userService.createUser(createUserDto, responseReq);
   }
 
   @Delete(':id')
-  deleteUser(@Headers('tokenAuthorization') tokenAuthorization:any, @Param('id') id: string) {
-    return this.userService.deleteUser(tokenAuthorization, id);
-  }
+  deleteUser(
+    @Headers('tokenAuthorization') tokenAuthorization:any, 
+    @Param('id') id: string, 
+    @Res({ passthrough: true }) responseReq
+  ) {
+    return this.userService.deleteUser(tokenAuthorization, id, responseReq);
+  };
 
   @Put(':id')
-  updateUser(@Headers('tokenAuthorization') tokenAuthorization:any, @Param('id') id: any, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(tokenAuthorization, id, updateUserDto);
-  }
-
+  updateUser(
+    @Headers('tokenAuthorization') tokenAuthorization:any, 
+    @Param('id') id: any, 
+    @Body() updateUserDto: UpdateUserDto, 
+    @Res({ passthrough: true }) responseReq
+  ) {
+    return this.userService.updateUser(tokenAuthorization, id, updateUserDto, responseReq);
+  };
 }

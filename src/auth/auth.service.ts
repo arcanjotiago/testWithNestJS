@@ -14,7 +14,7 @@ export class AuthService {
     private userRepository: Repository<User>,
   ) {}
 
-  async postAuth(authDto: AuthDto): Promise<any> {
+  async postAuth(authDto: AuthDto, responseReq): Promise<any> {
     let emailDatabase;
     let passwordDatabase;
     let userDatabase;
@@ -50,12 +50,14 @@ export class AuthService {
       }
     }
     
+    responseReq.status(401);
     return {"message": "Your credentials is incorect. Please try again!", "statusCode": 401}
   }
 
-  async checkAccessToken(access_token:any): Promise<any>{  
+  async checkAccessToken(access_token:any, responseReq): Promise<any>{  
 
     if(typeof(access_token) != "string"){
+      responseReq.status(401);
       return {
         "message":"Acess not authorized! please, send a valid access token in header requisition!",
         "status":401
@@ -69,6 +71,7 @@ export class AuthService {
       const calcTokenValidate = ((Date.now() - findTokenDatabase.validity) / 1000);
       
       if(calcTokenValidate > 86400){
+        responseReq.status(401);
         return {
           "message":"Acess not authorized! Access token expired!",
           "status":401,
@@ -80,6 +83,7 @@ export class AuthService {
       }
     }
     
+    responseReq.status(401);
     return {
       "message":"Acess not authorized! Token not found!",
       "status":401,
