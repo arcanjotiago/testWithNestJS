@@ -3,7 +3,7 @@ This repository was created to implement test of integration using NestJS with J
 
 Here we have a user and auth module. The auth module has a endpoint that allow user to perform login with email and password. After login, the user receives a valid token for `24hrs`.
 
-`*`Except to the route /user/create, add the header `tokenAuthorization` with you token authorization for access the endpoints bellow.
+> Except to the route /user/create, add the header `tokenAuthorization` with you token authorization for access the endpoints bellow.
 
 # Endpoints
 -`GET`  /status   
