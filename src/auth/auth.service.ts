@@ -14,7 +14,7 @@ export class AuthService {
     private userRepository: Repository<User>,
   ) {}
 
-  async postAuth(authDto: AuthDto, responseReq): Promise<any> {
+  async postAuth(authDto: AuthDto, responseReq?): Promise<any> {
     let emailDatabase;
     let passwordDatabase;
     let userDatabase;
@@ -54,7 +54,7 @@ export class AuthService {
     return {"message": "Your credentials is incorect. Please try again!", "statusCode": 401}
   }
 
-  async checkAccessToken(access_token:any, responseReq): Promise<any>{  
+  async checkAccessToken(access_token:any, responseReq?): Promise<any>{  
 
     if(typeof(access_token) != "string"){
       responseReq.status(401);

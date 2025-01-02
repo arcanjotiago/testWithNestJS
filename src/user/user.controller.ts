@@ -13,7 +13,7 @@ export class UserController {
   ) {}
   
   @Get('/')
-  getUser(@Headers('tokenAuthorization') tokenAuthorization:string, @Res({ passthrough: true }) responseReq){
+  getUser(@Headers('tokenAuthorization') tokenAuthorization:string, @Res({ passthrough: true }) responseReq?){
     return this.userService.getUser(tokenAuthorization, responseReq);  
   }
   
@@ -27,7 +27,7 @@ export class UserController {
   ;}
 
   @Post('create')
-  createUser(@Body() createUserDto: CreateUserDto, @Res({ passthrough: true }) responseReq) {
+  createUser(@Body() createUserDto: CreateUserDto, @Res({ passthrough: true }) responseReq?) {
     return this.userService.createUser(createUserDto, responseReq);
   }
 
@@ -35,7 +35,7 @@ export class UserController {
   deleteUser(
     @Headers('tokenAuthorization') tokenAuthorization:any, 
     @Param('id') id: string, 
-    @Res({ passthrough: true }) responseReq
+    @Res({ passthrough: true }) responseReq?
   ) {
     return this.userService.deleteUser(tokenAuthorization, id, responseReq);
   };
@@ -45,7 +45,7 @@ export class UserController {
     @Headers('tokenAuthorization') tokenAuthorization:any, 
     @Param('id') id: any, 
     @Body() updateUserDto: UpdateUserDto, 
-    @Res({ passthrough: true }) responseReq
+    @Res({ passthrough: true }) responseReq?
   ) {
     return this.userService.updateUser(tokenAuthorization, id, updateUserDto, responseReq);
   };

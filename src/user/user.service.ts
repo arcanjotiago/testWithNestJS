@@ -12,7 +12,7 @@ export class UserService {
     private authService: AuthService,
   ) {}
   
-  async getUser(access_token:string, responseReq){
+  async getUser(access_token:string, responseReq?){
     const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
@@ -21,7 +21,7 @@ export class UserService {
     return tokenValidate;
   }
 
-  async getUserId(access_token:any, id: any, responseReq): Promise<User> {
+  async getUserId(access_token:any, id: any, responseReq?): Promise<User> {
     const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
@@ -47,12 +47,12 @@ export class UserService {
     }   
   }
     
-  async createUser(createUserDto: CreateUserDto, responseReq){
+  async createUser(createUserDto: CreateUserDto, responseReq?){
     
     const validateMail = await this.getUserEmail(createUserDto.email);
 
     if(validateMail.status == 401){
-      responseReq.status(401);
+      responseReq?.status(401);
       return validateMail;
     };
 
@@ -73,7 +73,7 @@ export class UserService {
 
   }
 
-  async deleteUser(access_token:any, id: string, responseReq): Promise<any> {
+  async deleteUser(access_token:any, id: string, responseReq?): Promise<any> {
     const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
@@ -97,7 +97,7 @@ export class UserService {
     return tokenValidate; 
   }
   
-  async updateUser(access_token:any, id: any, updateUserDto: UpdateUserDto, responseReq): Promise<any> {
+  async updateUser(access_token:any, id: any, updateUserDto: UpdateUserDto, responseReq?): Promise<any> {
     const tokenValidate:any = await this.authService.checkAccessToken(access_token, responseReq);
     
     if (tokenValidate.status == 200){
